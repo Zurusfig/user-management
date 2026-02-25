@@ -1,4 +1,4 @@
-﻿namespace BackendApi.Models
+﻿namespace BackendApi.Models.Domain
 {
     public class UserPermission
     {

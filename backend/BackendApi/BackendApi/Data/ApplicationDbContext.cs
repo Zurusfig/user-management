@@ -1,4 +1,4 @@
-﻿using BackendApi.Models;
+﻿using BackendApi.Models.Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace BackendApi.Data
