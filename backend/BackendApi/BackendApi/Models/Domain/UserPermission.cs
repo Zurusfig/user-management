@@ -8,5 +8,6 @@
         public bool IsDeletable { get; set; }
         public string UserId { get; set; } = null!; //Foreign key to User
         public string PermissionId { get; set; } = null!; //Foreign key to Permission
+        public virtual Permission Permission { get; set; } = null!;
     }
 }

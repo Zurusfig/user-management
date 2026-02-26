@@ -92,5 +92,38 @@ namespace BackendApi.Controllers
 
             return CreatedAtAction(nameof(CreateUser), new { id = createdUser.Id }, response);
         }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetUserById(string id)
+        {
+            var user = await _userRepository.GetUserByIdAsync(id);
+
+            if (user == null)
+            {
+                return NotFound(new ApiResponse<UserResponseDto>
+                {
+                    Status = new StatusInfo { Code = "404", Description = "User not found" }
+                });
+            }
+
+            // Map Domain -> DTO
+            var responseDto = new UserResponseDto
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                Phone = user.Phone,
+                RoleId = user.RoleId,
+                UserName = user.UserName,
+                Password = user.Password,
+                Permissions = user.Permissions.Select(up => new PermissionDto
+                {
+                    PermissionId = up.PermissionId,
+                    PermissionName = up.Permission?.Name ?? "Unknown" // Now we have the real name!
+                }).ToList()
+            };
+
+            return Ok(new ApiResponse<UserResponseDto> { Data = responseDto });
+        }
     }
 }

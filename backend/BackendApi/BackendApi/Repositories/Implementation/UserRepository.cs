@@ -24,5 +24,12 @@ namespace BackendApi.Repositories.Implementation
         {
             return await _context.Users.AnyAsync(u => u.Id == id);
         }
+        public async Task<User?> GetUserByIdAsync(string id)
+        {
+            return await _context.Users
+                .Include(u => u.Permissions)           // Get the join table rows
+                    .ThenInclude(up => up.Permission)  // Join the actual Permission table for the Name
+                .FirstOrDefaultAsync(u => u.Id == id);
+        }
     }
 }
