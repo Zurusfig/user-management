@@ -1,4 +1,6 @@
 using BackendApi.Data;
+using BackendApi.Repositories.Implementation;
+using BackendApi.Repositories.Interface;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
@@ -14,6 +16,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("UserManagementConnectionString"));
 });
+
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<IPermissionsRepository, PermissionRepository>();
 
 var app = builder.Build();
 
