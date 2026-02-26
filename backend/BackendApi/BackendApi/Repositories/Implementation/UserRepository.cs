@@ -43,5 +43,37 @@ namespace BackendApi.Repositories.Implementation
 
             return true;
         }
+        public async Task<User?> UpdateUserAsync(string id, User updatedUser, List<UserPermission> newPermissions)
+        {
+            var existingUser = await _context.Users
+                .Include(u => u.Permissions)
+                .FirstOrDefaultAsync(u => u.Id == id);
+
+            if (existingUser == null)
+            {
+                return null;
+            }
+
+           
+            existingUser.FirstName = updatedUser.FirstName;
+            existingUser.LastName = updatedUser.LastName;
+            existingUser.Email = updatedUser.Email;
+            existingUser.Phone = updatedUser.Phone;
+            existingUser.RoleId = updatedUser.RoleId;
+            existingUser.UserName = updatedUser.UserName;
+
+
+            _context.UserPermissions.RemoveRange(existingUser.Permissions);
+
+        
+            foreach (var perm in newPermissions)
+            {
+                perm.UserId = existingUser.Id;
+                _context.UserPermissions.Add(perm);
+            }
+            await _context.SaveChangesAsync();
+
+            return existingUser;
+        }
     }
 }

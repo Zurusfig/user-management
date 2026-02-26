@@ -149,5 +149,58 @@ namespace BackendApi.Controllers
 
             return Ok(successResponse);
         }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateUser(string id, [FromBody] UserUpdateRequestDto request)
+        {
+            var userDomain = new User
+            {
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                Email = request.Email,
+                Phone = request.Phone,
+                RoleId = request.RoleId,
+                UserName = request.UserName
+            };
+
+            var permissionsDomain = request.Permissions.Select(p => new UserPermission
+            {
+                PermissionId = p.PermissionId,
+                IsReadable = p.IsReadable,
+                IsWritable = p.IsWritable,
+                IsDeletable = p.IsDeletable
+            }).ToList();
+            var updatedUser = await _userRepository.UpdateUserAsync(id, userDomain, permissionsDomain);
+
+            if (updatedUser == null)
+            {
+                return NotFound(new ApiResponse<UserResponseDto>
+                {
+                    Status = new StatusInfo { Code = "404", Description = $"User with ID '{id}' not found." }
+                });
+            }
+            var userWithNames = await _userRepository.GetUserByIdAsync(id);
+            var responseDto = new UserResponseDto
+            {
+                Id = userWithNames!.Id,
+                FirstName = userWithNames.FirstName,
+                LastName = userWithNames.LastName,
+                Email = userWithNames.Email,
+                Phone = userWithNames.Phone,
+                RoleId = userWithNames.RoleId,
+                UserName = userWithNames.UserName,
+                Password = userWithNames.Password,
+                Permissions = userWithNames.Permissions.Select(up => new PermissionDto
+                {
+                    PermissionId = up.PermissionId,
+                    PermissionName = up.Permission?.Name ?? "Unknown"
+                }).ToList()
+            };
+
+            return Ok(new ApiResponse<UserResponseDto>
+            {
+                Status = new StatusInfo { Code = "200", Description = "User updated successfully" },
+                Data = responseDto
+            });
+        }
     }
 }
