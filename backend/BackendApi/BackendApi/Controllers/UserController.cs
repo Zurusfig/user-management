@@ -126,5 +126,28 @@ namespace BackendApi.Controllers
 
             return Ok(new ApiResponse<UserResponseDto> { Data = responseDto });
         }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            var isDeleted = await _userRepository.DeleteUserAsync(id);
+
+            if (!isDeleted)
+            {
+                var errorResponse = new ApiResponse<string>
+                {
+                    Status = new StatusInfo { Code = "404", Description = $"User with ID '{id}' was not found." },
+                    Data = null
+                };
+                return NotFound(errorResponse);
+            }
+
+            var successResponse = new ApiResponse<string>
+            {
+                Status = new StatusInfo { Code = "200", Description = $"User with ID '{id}' was successfully deleted." },
+                Data = id
+            };
+
+            return Ok(successResponse);
+        }
     }
 }
