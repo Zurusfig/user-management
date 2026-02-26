@@ -64,23 +64,24 @@ namespace BackendApi.Controllers
 
             // Create the user and associated permissions in the database
             var createdUser = await _userRepository.CreateUserAsync(userDomain, permissionsDomain);
+            var userWithNames = await _userRepository.GetUserByIdAsync(createdUser.Id);
 
             // Mapping Domain Model back to Response DTO
             var responseDto = new UserResponseDto
             {
-                Id = createdUser.Id,
-                FirstName = createdUser.FirstName,
-                LastName = createdUser.LastName,
-                Email = createdUser.Email,
-                Phone = createdUser.Phone,
-                RoleId = createdUser.RoleId,
-                UserName = createdUser.UserName,
-                Password = createdUser.Password,
+                Id = userWithNames.Id,
+                FirstName = userWithNames.FirstName,
+                LastName = userWithNames.LastName,
+                Email = userWithNames.Email,
+                Phone = userWithNames.Phone,
+                RoleId = userWithNames.RoleId,
+                UserName = userWithNames.UserName,
+                Password = userWithNames.Password,
 
-                Permissions = createdUser.Permissions.Select(p => new PermissionDto
+                Permissions = userWithNames.Permissions.Select(p => new PermissionDto
                 {
                     PermissionId = p.PermissionId,
-                    PermissionName = "Name fetched on GET" // Placeholder until we write the GET method
+                    PermissionName = p.Permission?.Name ?? "Unknown"
                 }).ToList()
             };
 
@@ -119,7 +120,7 @@ namespace BackendApi.Controllers
                 Permissions = user.Permissions.Select(up => new PermissionDto
                 {
                     PermissionId = up.PermissionId,
-                    PermissionName = up.Permission?.Name ?? "Unknown" // Now we have the real name!
+                    PermissionName = up.Permission?.Name ?? "Unknown"
                 }).ToList()
             };
 
