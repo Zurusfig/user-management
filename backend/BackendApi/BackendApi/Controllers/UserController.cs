@@ -20,6 +20,23 @@ namespace BackendApi.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateUser(UserCreateRequestDto request)
         {
+            // Preventing duplicate user creation based on ID
+            if (await _userRepository.UserExistsAsync(request.Id))
+            {
+                var errorResponse = new ApiResponse<UserResponseDto>
+                {
+                    Status = new StatusInfo
+                    {
+                        Code = "409",
+                        Description = $"A user with the ID '{request.Id}' already exists."
+                    },
+                    Data = null
+                };
+
+                return Conflict(errorResponse);
+            }
+
+            // Mapping DTO to Domain Model
             var userDomain = new User
             {
                 Id = request.Id,
@@ -45,8 +62,10 @@ namespace BackendApi.Controllers
                 });
             }
 
+            // Create the user and associated permissions in the database
             var createdUser = await _userRepository.CreateUserAsync(userDomain, permissionsDomain);
 
+            // Mapping Domain Model back to Response DTO
             var responseDto = new UserResponseDto
             {
                 Id = createdUser.Id,

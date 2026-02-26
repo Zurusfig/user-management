@@ -20,5 +20,9 @@ namespace BackendApi.Repositories.Implementation
 
             return user;
         }
+        public async Task<bool> UserExistsAsync(string id)
+        {
+            return await _context.Users.AnyAsync(u => u.Id == id);
+        }
     }
 }
