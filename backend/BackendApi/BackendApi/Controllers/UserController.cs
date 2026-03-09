@@ -202,5 +202,36 @@ namespace BackendApi.Controllers
                 Data = responseDto
             });
         }
+        [HttpPost("DataTable")]
+        public async Task<IActionResult> GetUsersDataTable([FromBody] DataTableRequestDto request)
+        {
+            var (users, totalCount) = await _userRepository.GetUsersDataTableAsync(request);
+            var responseDto = new UserPagedResponseDto
+            {
+                Page = request.PageNumber,
+                PageSize = request.PageSize > 0 ? request.PageSize : 10,
+                TotalCount = totalCount,
+                DataSource = users.Select(u => new UserListItemDto
+                {
+                    UserId = u.Id, 
+                    FirstName = u.FirstName,
+                    LastName = u.LastName,
+                    Email = u.Email,
+                    Username = u.UserName,
+                    CreatedDate = u.CreatedDate.ToString("yyyy-MM-ddTHH:mm:ssZ"),
+                    Role = new RoleDto
+                    {
+                        RoleId = u.RoleId,
+                        RoleName = u.Role?.Name ?? "Unknown" 
+                    },
+                    Permissions = u.Permissions.Select(p => new PermissionDto
+                    {
+                        PermissionId = p.PermissionId,
+                        PermissionName = p.Permission?.Name ?? "Unknown"
+                    }).ToList()
+                }).ToList()
+            };
+            return Ok(responseDto);
+        }
     }
 }

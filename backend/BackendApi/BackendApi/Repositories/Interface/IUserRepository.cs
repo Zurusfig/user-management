@@ -1,4 +1,5 @@
 ﻿using BackendApi.Models.Domain;
+using BackendApi.Models.DTO;
 
 namespace BackendApi.Repositories.Interface
 {
@@ -9,5 +10,6 @@ namespace BackendApi.Repositories.Interface
         Task<User?> GetUserByIdAsync(string id);
         Task<bool> DeleteUserAsync(string id);
         Task<User?> UpdateUserAsync(string id, User updatedUser, List<UserPermission> newPermissions);
+        Task<(List<User> Users, int TotalCount)> GetUsersDataTableAsync(DataTableRequestDto request);
     }
 }

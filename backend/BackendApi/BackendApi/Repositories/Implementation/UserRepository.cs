@@ -1,5 +1,6 @@
 ﻿using BackendApi.Data;
 using BackendApi.Models.Domain;
+using BackendApi.Models.DTO;
 using BackendApi.Repositories.Interface;
 using Microsoft.EntityFrameworkCore;
 
@@ -74,6 +75,51 @@ namespace BackendApi.Repositories.Implementation
             await _context.SaveChangesAsync();
 
             return existingUser;
+        }
+        public async Task<(List<User> Users, int TotalCount)> GetUsersDataTableAsync(DataTableRequestDto request)
+        {
+            var query = _context.Users
+                .Include(u => u.Role)
+                .Include(u => u.Permissions)
+                    .ThenInclude(up => up.Permission) 
+                .AsQueryable();
+
+
+            if (!string.IsNullOrWhiteSpace(request.Search))
+            {
+                var searchTerm = request.Search.ToLower();
+                query = query.Where(u => u.FirstName.ToLower().Contains(searchTerm) ||
+                                         u.LastName.ToLower().Contains(searchTerm) ||
+                                         u.Email.ToLower().Contains(searchTerm));
+            }
+
+            
+            var totalCount = await query.CountAsync();
+
+
+            if (!string.IsNullOrWhiteSpace(request.OrderBy))
+            {
+                bool isDesc = request.OrderDirection?.ToLower() == "desc";
+                query = request.OrderBy.ToLower() switch
+                {
+                    "userid" or "id" => isDesc ? query.OrderByDescending(u => u.Id) : query.OrderBy(u => u.Id),
+                    "firstname" => isDesc ? query.OrderByDescending(u => u.FirstName) : query.OrderBy(u => u.FirstName),
+                    "lastname" => isDesc ? query.OrderByDescending(u => u.LastName) : query.OrderBy(u => u.LastName),
+                    "email" => isDesc ? query.OrderByDescending(u => u.Email) : query.OrderBy(u => u.Email),
+                    "username" => isDesc ? query.OrderByDescending(u => u.UserName) : query.OrderBy(u => u.UserName),
+                    "phone" => isDesc ? query.OrderByDescending(u => u.Phone) : query.OrderBy(u => u.Phone),
+                    "roleid" => isDesc ? query.OrderByDescending(u => u.RoleId) : query.OrderBy(u => u.RoleId),
+                    "createddate" => isDesc ? query.OrderByDescending(u => u.CreatedDate) : query.OrderBy(u => u.CreatedDate),
+                    _ => isDesc ? query.OrderByDescending(u => u.FirstName) : query.OrderBy(u => u.FirstName)
+                };
+            }
+
+            int pageSize = request.PageSize > 0 ? request.PageSize : 10;
+            int skip = request.PageNumber * pageSize;
+
+            var users = await query.Skip(skip).Take(pageSize).ToListAsync();
+
+            return (users, totalCount);
         }
     }
 }

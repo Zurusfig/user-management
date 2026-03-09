@@ -11,6 +11,8 @@
         public string UserName { get; set; } = null!;
         public string Password { get; set; } = null!;
         public List<UserPermission> Permissions { get; set; } = new List<UserPermission>();
+        public virtual Role Role { get; set; } = null!;
+        public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
 
     }
 }
