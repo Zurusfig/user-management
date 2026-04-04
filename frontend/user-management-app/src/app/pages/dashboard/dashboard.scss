@@ -31,12 +31,14 @@
 
     .user-table-container {
         background-color: white;
-        border-radius: 0.5rem;
-        padding: 1.5rem;
+        border-radius: 1rem;
+        padding: 1rem 0 0;
 
         .table-title {
             font-weight: 600;
-            margin-bottom: 1rem;
+            font-size: 1.25rem;
+            margin: 0 0 1rem;
+            padding: 0 1rem;
         }
     }
 }
