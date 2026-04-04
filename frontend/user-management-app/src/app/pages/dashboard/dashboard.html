@@ -1,1 +1,24 @@
-<p>dashboard works!</p>
+<div class="dashboard">
+    <h2 class="dashboard-title">Users Dashboard</h2>
+
+    <div class="toolbar">
+        <div class="search-wrapper">
+            <!-- app-search-bar goes here later -->
+        </div>
+        <div class="actions">
+            <button class="btn-primary">Add User +</button>
+            <button class="btn-secondary">Sort by<mat-icon>keyboard_arrow_down</mat-icon> </button>
+            <button class="btn-secondary">Saved search <mat-icon>keyboard_arrow_down</mat-icon> </button>
+            <button class="btn-secondary"><mat-icon>filter_list</mat-icon></button>
+        </div>
+    </div>
+
+    <div class="user-table-container">
+        <div class="table-title">List Users</div>
+        <app-user-table></app-user-table>
+    </div>
+
+    <div class="pagination-wrapper">
+        <!-- pagination goes here later -->
+    </div>
+</div>
