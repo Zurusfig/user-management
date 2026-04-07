@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { UserTable } from "../../components/user-table/user-table";
 import { MatIconModule } from '@angular/material/icon';
 import { Pagination } from '../../components/pagination/pagination';
+import { UserService } from '../../services/user-service';
+import { DataTableRequest } from '../../models/user.model';
 
 @Component({
   selector: 'app-dashboard',
@@ -9,6 +11,39 @@ import { Pagination } from '../../components/pagination/pagination';
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
 })
-export class Dashboard {
+export class Dashboard implements OnInit {
+  private userService = inject(UserService);
+
+  pageNumber = signal(1);
+  pageSize = signal(6);
+  totalCount = computed(() => this.userService.users()?.totalCount ?? 0);
+
+  dataTableRequest = computed<DataTableRequest>(() => ({
+    orderBy: undefined,
+    orderDirection: undefined,
+    pageNumber: this.pageNumber() - 1,
+    pageSize: this.pageSize(),
+    search: undefined
+  }));
+
+  ngOnInit() {
+    this.fetchUsers();
+  }
+
+  fetchUsers() {
+    this.userService.getUsers(this.dataTableRequest());
+  }
+
+  onPageChange(newPage: number) {
+    this.pageNumber.set(newPage);
+    this.fetchUsers();
+  }
+
+  onPageSizeChange(newSize: number) {
+    this.pageSize.set(newSize);
+    this.pageNumber.set(1);
+    this.fetchUsers();
+  }
+
 
 }

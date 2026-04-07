@@ -19,6 +19,12 @@
     </div>
 
     <div class="pagination-wrapper">
-        <app-pagination></app-pagination>
+        <app-pagination
+        [totalCount]="totalCount()"
+        [pageSize]="pageSize()"
+        [pageNumber]="pageNumber()"
+        (pageChange)="onPageChange($event)"
+        (pageSizeChange)="onPageSizeChange($event)"
+        ></app-pagination>
     </div>
 </div>
