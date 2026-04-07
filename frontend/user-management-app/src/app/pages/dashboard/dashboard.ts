@@ -4,10 +4,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { Pagination } from '../../components/pagination/pagination';
 import { UserService } from '../../services/user-service';
 import { DataTableRequest } from '../../models/user.model';
+import { SearchBar } from '../../components/search-bar/search-bar';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [UserTable, MatIconModule, Pagination],
+  imports: [UserTable, MatIconModule, Pagination, SearchBar],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
 })
@@ -17,13 +18,14 @@ export class Dashboard implements OnInit {
   pageNumber = signal(1);
   pageSize = signal(6);
   totalCount = computed(() => this.userService.users()?.totalCount ?? 0);
+  search = signal('');
 
   dataTableRequest = computed<DataTableRequest>(() => ({
     orderBy: undefined,
     orderDirection: undefined,
     pageNumber: this.pageNumber() - 1,
     pageSize: this.pageSize(),
-    search: undefined
+    search: this.search(),
   }));
 
   ngOnInit() {
@@ -45,5 +47,11 @@ export class Dashboard implements OnInit {
     this.fetchUsers();
   }
 
+  onSearch(query: string) {
+    console.log('Search query:', query);
+    this.pageNumber.set(1);
+    this.search.set(query);
+    this.fetchUsers();
+  }
 
 }

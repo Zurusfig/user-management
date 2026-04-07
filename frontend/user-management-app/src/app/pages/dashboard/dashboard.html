@@ -3,7 +3,7 @@
 
     <div class="toolbar">
         <div class="search-wrapper">
-            <!-- app-search-bar goes here later -->
+            <app-search-bar (searchChanged)="onSearch($event)"></app-search-bar>
         </div>
         <div class="actions">
             <button class="btn-primary">Add User +</button>
@@ -19,12 +19,7 @@
     </div>
 
     <div class="pagination-wrapper">
-        <app-pagination
-        [totalCount]="totalCount()"
-        [pageSize]="pageSize()"
-        [pageNumber]="pageNumber()"
-        (pageChange)="onPageChange($event)"
-        (pageSizeChange)="onPageSizeChange($event)"
-        ></app-pagination>
+        <app-pagination [totalCount]="totalCount()" [pageSize]="pageSize()" [pageNumber]="pageNumber()"
+            (pageChange)="onPageChange($event)" (pageSizeChange)="onPageSizeChange($event)"></app-pagination>
     </div>
 </div>
