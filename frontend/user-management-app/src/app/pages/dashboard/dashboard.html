@@ -7,7 +7,23 @@
         </div>
         <div class="actions">
             <button class="btn-primary">Add User +</button>
-            <button class="btn-secondary">Sort by<mat-icon>keyboard_arrow_down</mat-icon> </button>
+
+            <div class="sort-wrapper">
+                <button class="btn-secondary" (click)="toggleSort()">
+                    Sort by <mat-icon>keyboard_arrow_down</mat-icon>
+                </button>
+
+                @if (showSort()) {
+                <div class="sort-dropdown">
+                    <div class="sort-option" (click)="onSort('firstName', 'asc')">Name (A-Z)</div>
+                    <div class="sort-option" (click)="onSort('firstName', 'desc')">Name (Z-A)</div>
+                    <div class="sort-option" (click)="onSort('createdDate', 'desc')">Date (Newest)</div>
+                    <div class="sort-option" (click)="onSort('createdDate', 'asc')">Date (Oldest)</div>
+                    <div class="sort-option" (click)="onSort('roleid', 'asc')">Role</div>
+                </div>
+                }
+            </div>
+
             <button class="btn-secondary">Saved search <mat-icon>keyboard_arrow_down</mat-icon> </button>
             <button class="btn-secondary"><mat-icon>filter_list</mat-icon></button>
         </div>

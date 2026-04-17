@@ -19,10 +19,14 @@ export class Dashboard implements OnInit {
   pageSize = signal(6);
   totalCount = computed(() => this.userService.users()?.totalCount ?? 0);
   search = signal('');
+  showSort = signal(false);
+  orderBy = signal<string | undefined>(undefined);
+  orderDirection = signal<string | undefined>(undefined);
+
 
   dataTableRequest = computed<DataTableRequest>(() => ({
-    orderBy: undefined,
-    orderDirection: undefined,
+    orderBy: this.orderBy(),
+    orderDirection: this.orderDirection(),
     pageNumber: this.pageNumber() - 1,
     pageSize: this.pageSize(),
     search: this.search(),
@@ -51,6 +55,17 @@ export class Dashboard implements OnInit {
     console.log('Search query:', query);
     this.pageNumber.set(1);
     this.search.set(query);
+    this.fetchUsers();
+  }
+
+  toggleSort() {
+    this.showSort.set(!this.showSort());
+  }
+
+  onSort(orderBy: string, direction: string) {
+    this.orderBy.set(orderBy);
+    this.orderDirection.set(direction);
+    this.showSort.set(false);
     this.fetchUsers();
   }
 
