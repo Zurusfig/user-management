@@ -1,6 +1,6 @@
 <div class="modal-overlay">
   <div class="modal">
-    
+
     <div class="modal-header">
       <h2>Add User</h2>
       <mat-icon class="close-btn" (click)="closeModal.emit()">close</mat-icon>
@@ -32,9 +32,18 @@
         <div class="form-field">
           <select>
             <option value="" disabled selected>Select Role Type</option>
-            <option value="employee">Employee</option>
+            <!-- <option value="employee">Employee</option>
             <option value="admin">Admin</option>
-            <option value="super-admin">Super Admin</option>
+            <option value="super-admin">Super Admin</option> -->
+            @if (roleIsLoading()) {
+            <option disabled>Loading roles...</option>
+            } @else if (roleIsError()) {
+            <option disabled>Error loading roles</option>
+            } @else {
+            @for (role of roles(); track role.roleId) {
+            <option [value]="role.roleId">{{ role.roleName }}</option>
+            }
+            }
           </select>
         </div>
       </div>
@@ -61,24 +70,24 @@
           </tr>
         </thead>
         <tbody>
+          @if (permissionIsLoading()) {
           <tr>
-            <td>Inventory System</td>
+            <td colspan="4">Loading permissions...</td>
+          </tr>
+          } @else if (permissionIsError()) {
+          <tr>
+            <td colspan="4">Error loading permissions</td>
+          </tr>
+          } @else {
+          @for (permission of permissions()?.data; track permission.permissionId) {
+          <tr>
+            <td>{{ permission.permissionName }}</td>
             <td><input type="checkbox" /></td>
             <td><input type="checkbox" /></td>
             <td><input type="checkbox" /></td>
           </tr>
-          <tr>
-            <td>Sales Report</td>
-            <td><input type="checkbox" /></td>
-            <td><input type="checkbox" /></td>
-            <td><input type="checkbox" /></td>
-          </tr>
-          <tr>
-            <td>User Management</td>
-            <td><input type="checkbox" /></td>
-            <td><input type="checkbox" /></td>
-            <td><input type="checkbox" /></td>
-          </tr>
+          }
+          }
         </tbody>
       </table>
     </div>
@@ -87,6 +96,5 @@
       <button class="btn-primary">Add User</button>
       <button class="btn-cancel" (click)="closeModal.emit()">Cancel</button>
     </div>
-
   </div>
 </div>
