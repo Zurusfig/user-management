@@ -5,10 +5,11 @@ import { Pagination } from '../../components/pagination/pagination';
 import { UserService } from '../../services/user-service';
 import { DataTableRequest } from '../../models/user.model';
 import { SearchBar } from '../../components/search-bar/search-bar';
+import { AddUserModal } from '../../components/add-user-modal/add-user-modal';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [UserTable, MatIconModule, Pagination, SearchBar],
+  imports: [UserTable, MatIconModule, Pagination, SearchBar, AddUserModal],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
 })
@@ -22,7 +23,7 @@ export class Dashboard implements OnInit {
   showSort = signal(false);
   orderBy = signal<string | undefined>(undefined);
   orderDirection = signal<string | undefined>(undefined);
-
+  showAddUserModal = signal(false);
 
   dataTableRequest = computed<DataTableRequest>(() => ({
     orderBy: this.orderBy(),
@@ -67,6 +68,10 @@ export class Dashboard implements OnInit {
     this.orderDirection.set(direction);
     this.showSort.set(false);
     this.fetchUsers();
+  }
+
+  toggleAddUserModal() {
+    this.showAddUserModal.set(!this.showAddUserModal());
   }
 
 }

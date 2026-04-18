@@ -6,7 +6,11 @@
             <app-search-bar (searchChanged)="onSearch($event)"></app-search-bar>
         </div>
         <div class="actions">
-            <button class="btn-primary">Add User +</button>
+            <button class="btn-primary" (click)="toggleAddUserModal()">Add User +</button>
+
+            @if (showAddUserModal()) {
+            <app-add-user-modal (closeModal)="toggleAddUserModal()"></app-add-user-modal>
+            }
 
             <div class="sort-wrapper">
                 <button class="btn-secondary" (click)="toggleSort()">
