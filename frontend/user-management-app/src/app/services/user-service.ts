@@ -1,8 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { HttpClient, httpResource } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { DataTableRequest } from '../models/user.model';
-import { ApiResponse } from '../models/api-response.model';
 import { UserPagedResponse } from '../models/user.model';
 
 @Injectable({
