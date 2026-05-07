@@ -1,8 +1,9 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { DataTableRequest } from '../models/user.model';
+import { DataTableRequest, UserCreateRequest, UserResponse } from '../models/user.model';
 import { UserPagedResponse } from '../models/user.model';
+import { ApiResponse } from '../models/api-response.model';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +16,9 @@ export class UserService {
 
   isLoading = signal(false);
   isError = signal(false);
+  isCreating = signal(false);
+  isCreateError = signal(false);
+  createSuccess = signal(false);
 
   getUsers(request: DataTableRequest) {
     console.log('Fetching users with request:', request);
@@ -30,6 +34,22 @@ export class UserService {
       error: () => {
         this.isError.set(true);
         this.isLoading.set(false);
+      }
+    });
+  }
+
+  createUser(request: UserCreateRequest) {
+    console.log('Creating user with request:', request);
+    this.isCreating.set(true);
+    this.isCreateError.set(false);
+    this.http.post<ApiResponse<UserResponse>>(`${this.apiBaseUrl}/api/User`, request).subscribe({
+      next: () => {
+        this.isCreating.set(false);
+        this.createSuccess.set(true);
+      },
+      error: () => {
+        this.isCreateError.set(true);
+        this.isCreating.set(false);
       }
     });
   }

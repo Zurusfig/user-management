@@ -133,9 +133,9 @@
             @for (permission of permissions(); track permission.permissionId; let i = $index) {
             <tr [formGroupName]="i">
               <td>{{ permission.permissionName }}</td>
-              <td><input type="checkbox" formControlName="read" /></td>
-              <td><input type="checkbox" formControlName="write" /></td>
-              <td><input type="checkbox" formControlName="delete" /></td>
+              <td><input type="checkbox" formControlName="isReadable" /></td>
+              <td><input type="checkbox" formControlName="isWritable" /></td>
+              <td><input type="checkbox" formControlName="isDeletable" /></td>
             </tr>
             }
             }

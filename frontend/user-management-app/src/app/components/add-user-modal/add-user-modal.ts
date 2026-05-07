@@ -3,6 +3,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { PermissionService } from '../../services/permission-service';
 import { RoleService } from '../../services/role-service';
 import { ReactiveFormsModule, FormArray, FormControl, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
+import { UserService } from '../../services/user-service';
+import { UserCreateRequest, UserPermissionRequest } from '../../models/user.model';
 
 
 @Component({
@@ -15,6 +17,7 @@ export class AddUserModal {
   closeModal = output<void>();
   private roleService = inject(RoleService);
   private permissionService = inject(PermissionService);
+  private userService = inject(UserService);
 
   private getAllRolesRef = this.roleService.getAllRoles();
   private getAllPermissionsRef = this.permissionService.getAllPermissions();
@@ -84,9 +87,9 @@ export class AddUserModal {
         perms.forEach((perm) => {
           this.permissionsArray.push(new FormGroup({
             permissionId: new FormControl<string>(perm.permissionId, { nonNullable: true }),
-            read: new FormControl<boolean>(false, { nonNullable: true }),
-            write: new FormControl<boolean>(false, { nonNullable: true }),
-            delete: new FormControl<boolean>(false, { nonNullable: true })
+            isReadable: new FormControl<boolean>(false, { nonNullable: true }),
+            isWritable: new FormControl<boolean>(false, { nonNullable: true }),
+            isDeletable: new FormControl<boolean>(false, { nonNullable: true })
           }));
         });
       }
@@ -99,6 +102,27 @@ export class AddUserModal {
 
     if (this.addUserFormGroup.valid) {
       console.log('Form submitted!', this.addUserFormGroup.value);
+
+      const formValue = this.addUserFormGroup.value;
+
+      const request: UserCreateRequest = {
+        id: formValue.id!,
+        firstName: formValue.firstName!,
+        lastName: formValue.lastName!,
+        email: formValue.email!,
+        phone: formValue.phone ?? undefined,
+        roleId: formValue.roleId!,
+        userName: formValue.userName!,
+        password: formValue.password!,
+        permissions: (formValue.permissions as UserPermissionRequest[]).map((p, i) => ({
+          permissionId: this.permissions()[i].permissionId,
+          isReadable: p.isReadable,
+          isWritable: p.isWritable,
+          isDeletable: p.isDeletable
+        }))
+      };
+
+      this.userService.createUser(request);
     }
   }
 

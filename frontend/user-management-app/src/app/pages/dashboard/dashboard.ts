@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
 import { UserTable } from "../../components/user-table/user-table";
 import { MatIconModule } from '@angular/material/icon';
 import { Pagination } from '../../components/pagination/pagination';
@@ -32,6 +32,16 @@ export class Dashboard implements OnInit {
     pageSize: this.pageSize(),
     search: this.search(),
   }));
+
+  constructor() {
+    effect(() => {
+      if (this.userService.createSuccess()) {
+        this.fetchUsers(); 
+        this.toggleAddUserModal(); 
+        this.userService.createSuccess.set(false);
+      }
+    });
+  }
 
   ngOnInit() {
     this.fetchUsers();
