@@ -36,9 +36,14 @@ export class Dashboard implements OnInit {
   constructor() {
     effect(() => {
       if (this.userService.createSuccess()) {
-        this.fetchUsers(); 
-        this.toggleAddUserModal(); 
+        this.fetchUsers();
+        this.toggleAddUserModal();
         this.userService.createSuccess.set(false);
+      }
+
+      if (this.userService.deleteSuccess()) {
+        this.fetchUsers();
+        this.userService.deleteSuccess.set(false);
       }
     });
   }
