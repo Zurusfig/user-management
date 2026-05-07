@@ -1,14 +1,15 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
 import { UserTable } from "../../components/user-table/user-table";
 import { MatIconModule } from '@angular/material/icon';
 import { Pagination } from '../../components/pagination/pagination';
 import { UserService } from '../../services/user-service';
 import { DataTableRequest } from '../../models/user.model';
 import { SearchBar } from '../../components/search-bar/search-bar';
+import { AddUserModal } from '../../components/add-user-modal/add-user-modal';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [UserTable, MatIconModule, Pagination, SearchBar],
+  imports: [UserTable, MatIconModule, Pagination, SearchBar, AddUserModal],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
 })
@@ -22,7 +23,7 @@ export class Dashboard implements OnInit {
   showSort = signal(false);
   orderBy = signal<string | undefined>(undefined);
   orderDirection = signal<string | undefined>(undefined);
-
+  showAddUserModal = signal(false);
 
   dataTableRequest = computed<DataTableRequest>(() => ({
     orderBy: this.orderBy(),
@@ -31,6 +32,16 @@ export class Dashboard implements OnInit {
     pageSize: this.pageSize(),
     search: this.search(),
   }));
+
+  constructor() {
+    effect(() => {
+      if (this.userService.createSuccess()) {
+        this.fetchUsers(); 
+        this.toggleAddUserModal(); 
+        this.userService.createSuccess.set(false);
+      }
+    });
+  }
 
   ngOnInit() {
     this.fetchUsers();
@@ -67,6 +78,10 @@ export class Dashboard implements OnInit {
     this.orderDirection.set(direction);
     this.showSort.set(false);
     this.fetchUsers();
+  }
+
+  toggleAddUserModal() {
+    this.showAddUserModal.set(!this.showAddUserModal());
   }
 
 }
