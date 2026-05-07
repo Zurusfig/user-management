@@ -10,10 +10,16 @@ import { DatePipe } from '@angular/common';
   templateUrl: './user-table.html',
   styleUrl: './user-table.scss',
 })
-export class UserTable{
+export class UserTable {
   private userService = inject(UserService);
 
   isLoading = this.userService.isLoading;
   isError = this.userService.isError;
   userList = computed(() => this.userService.users()?.dataSource ?? []);
+
+  onDelete(userId: string) {
+    if (confirm('Are you sure you want to delete this user?')) {
+      this.userService.deleteUser(userId);
+    }
+  }
 }

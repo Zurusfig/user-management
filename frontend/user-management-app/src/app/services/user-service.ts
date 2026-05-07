@@ -19,6 +19,7 @@ export class UserService {
   isCreating = signal(false);
   isCreateError = signal(false);
   createSuccess = signal(false);
+  deleteSuccess = signal(false);
 
   getUsers(request: DataTableRequest) {
     console.log('Fetching users with request:', request);
@@ -50,6 +51,21 @@ export class UserService {
       error: () => {
         this.isCreateError.set(true);
         this.isCreating.set(false);
+      }
+    });
+  }
+
+  deleteUser(userId: string) {
+    this.isLoading.set(true);
+    this.isError.set(false);
+    this.http.delete<ApiResponse<string>>(`${this.apiBaseUrl}/api/User/${userId}`).subscribe({
+      next: () => {
+        this.isLoading.set(false);
+        this.deleteSuccess.set(true);
+      },
+      error: () => {
+        this.isError.set(true);
+        this.isLoading.set(false);
       }
     });
   }
