@@ -90,7 +90,8 @@ namespace BackendApi.Repositories.Implementation
                 var searchTerm = request.Search.ToLower();
                 query = query.Where(u => u.FirstName.ToLower().Contains(searchTerm) ||
                                          u.LastName.ToLower().Contains(searchTerm) ||
-                                         u.Email.ToLower().Contains(searchTerm));
+                                         u.Email.ToLower().Contains(searchTerm) ||
+                                         (u.FirstName.ToLower() + " " + u.LastName.ToLower()).Contains(searchTerm));
             }
 
             

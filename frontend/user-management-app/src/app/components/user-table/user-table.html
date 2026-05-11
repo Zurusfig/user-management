@@ -1,0 +1,44 @@
+<table class="user-table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Create Date</th>
+            <th>Role</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (isLoading()) {
+        <tr>
+            <td colspan="4">Loading...</td>
+        </tr>
+        }
+        @else if (isError()) {
+        <tr>
+            <td colspan="4">Error loading users.</td>
+        </tr>
+        }
+        @else {
+        @for (user of userList(); track user.userId) {
+        <tr>
+            <td>
+                <div class="name-cell">
+                    <div class="name-email">
+                        <div class="name">{{ user.firstName }} {{ user.lastName }}</div>
+                        <div class="email">{{ user.email }}</div>
+                    </div>
+                    <span class="badge badge-super-admin">{{ user.role.roleName }}</span>
+                </div>
+            </td>
+            <td>{{ user.createdDate | date: 'dd MMM, yyyy' }}</td>
+            <td>{{ user.role.roleName }}</td>
+            <td>
+                <div class="action-cell">
+                    <mat-icon class="action-icon" (click)="onEdit(user.userId)">edit</mat-icon>
+                    <mat-icon class="action-icon" (click)="onDelete(user.userId)">delete</mat-icon>
+                </div>
+            </td>
+        </tr>
+        }}
+    </tbody>
+</table>

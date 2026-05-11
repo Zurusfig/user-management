@@ -1,0 +1,152 @@
+<form [formGroup]="addUserFormGroup" (ngSubmit)="onSubmit()">
+  <div class="modal-overlay">
+    <div class="modal">
+
+      <div class="modal-header">
+        <h2>Add User</h2>
+        <mat-icon class="close-btn" (click)="closeModal.emit()">close</mat-icon>
+      </div>
+
+      <div class="modal-body">
+        <div class="form-row">
+          <div class="form-field full">
+            <input type="text" placeholder="User ID *" formControlName="id" />
+            <div class="error-message">
+              @if (addUserFormGroup.get('id')?.invalid && addUserFormGroup.get('id')?.touched) {
+              User ID is required
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-field">
+            <input type="text" placeholder="First Name *" formControlName="firstName" />
+            <div class="error-message">
+              @if (addUserFormGroup.get('firstName')?.invalid && addUserFormGroup.get('firstName')?.touched) {
+              First name is required
+              }
+            </div>
+          </div>
+          <div class="form-field">
+            <input type="text" placeholder="Last Name *" formControlName="lastName" />
+            <div class="error-message">
+              @if (addUserFormGroup.get('lastName')?.invalid && addUserFormGroup.get('lastName')?.touched) {
+              Last name is required
+              }
+            </div>
+
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-field">
+            <input type="email" placeholder="Email *" formControlName="email" />
+            <div class="error-message">
+              @if (addUserFormGroup.get('email')?.invalid && addUserFormGroup.get('email')?.touched) {
+              @if (addUserFormGroup.get('email')?.hasError('required')) {
+              <div class="error-message">Email is required</div>
+              } @else if (addUserFormGroup.get('email')?.hasError('email')) {
+              <div class="error-message">Invalid email format</div>
+              }
+              }
+            </div>
+          </div>
+          <div class="form-field">
+            <input type="text" placeholder="Mobile No" formControlName="phone" (keypress)="onlyNumbers($event)" />
+            <div class="error-message">
+              @if (addUserFormGroup.get('phone')?.hasError('pattern') && addUserFormGroup.get('phone')?.touched) {
+              Phone must be 10 digits
+              }
+            </div>
+          </div>
+          <div class="form-field">
+            <select formControlName="roleId">
+              <option value="" disabled selected>Select Role Type</option>
+              <!-- <option value="employee">Employee</option>
+            <option value="admin">Admin</option>
+            <option value="super-admin">Super Admin</option> -->
+              @if (roleIsLoading()) {
+              <option disabled>Loading roles...</option>
+              } @else if (roleIsError()) {
+              <option disabled>Error loading roles</option>
+              } @else {
+              @for (role of roles(); track role.roleId) {
+              <option [value]="role.roleId">{{ role.roleName }}</option>
+              }
+              }
+            </select>
+            <div class="error-message">
+              @if (addUserFormGroup.get('roleId')?.invalid && addUserFormGroup.get('roleId')?.touched) {
+              Please select a role
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-field">
+            <input type="text" placeholder="Username *" formControlName="userName" />
+            <div class="error-message">
+              @if (addUserFormGroup.get('userName')?.invalid && addUserFormGroup.get('userName')?.touched) {
+              Username is required
+              }
+            </div>
+          </div>
+          <div class="form-field">
+            <input type="password" placeholder="Password *" formControlName="password" />
+            @if (addUserFormGroup.get('password')?.invalid && addUserFormGroup.get('password')?.touched) {
+            @if (addUserFormGroup.get('password')?.hasError('minlength')) {
+            <div class="error-message">Password must be at least 8 characters</div>
+            }
+            }
+          </div>
+          <div class="form-field">
+            <input type="password" placeholder="Confirm Password *" formControlName="confirmPassword" />
+            @if (addUserFormGroup.hasError('passwordMismatch') && addUserFormGroup.get('confirmPassword')?.touched) {
+            <div class="error-message">Passwords do not match</div>
+            } @else {
+            <div class="error-message"></div>
+            }
+          </div>
+        </div>
+
+        <table class="permission-table" formArrayName="permissions">
+          <thead>
+            <tr>
+              <th>Module Permission</th>
+              <th>Read</th>
+              <th>Write</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            @if (permissionIsLoading()) {
+            <tr>
+              <td colspan="4">Loading permissions...</td>
+            </tr>
+            } @else if (permissionIsError()) {
+            <tr>
+              <td colspan="4">Error loading permissions</td>
+            </tr>
+            } @else {
+            @for (permission of permissions(); track permission.permissionId; let i = $index) {
+            <tr [formGroupName]="i">
+              <td>{{ permission.permissionName }}</td>
+              <td><input type="checkbox" formControlName="isReadable" /></td>
+              <td><input type="checkbox" formControlName="isWritable" /></td>
+              <td><input type="checkbox" formControlName="isDeletable" /></td>
+            </tr>
+            }
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <div class="modal-footer">
+        <button type="submit" class="btn-primary">Add User</button>
+        <button class="btn-cancel" (click)="closeModal.emit()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</form>

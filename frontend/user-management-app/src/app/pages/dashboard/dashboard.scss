@@ -1,0 +1,120 @@
+.dashboard {
+    padding: 1.5rem;
+    background-color: #f5f5f5;
+    min-height: 100vh;
+    padding-top: 1rem;
+    display: flex;
+    flex-direction: column;
+
+    .dashboard-title {
+        margin-top: 0;
+        color: #1a73e8;
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 2rem;
+    }
+
+    .toolbar {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 2rem;
+        margin-bottom: 1.5rem;
+
+        .search-wrapper {
+            flex: 1;
+        }
+
+        .actions {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+    }
+
+    .user-table-container {
+        background-color: white;
+        border-radius: 1rem;
+        padding: 1rem 0 0;
+        flex: 1;
+        overflow-y: auto;
+
+        .table-title {
+            font-weight: 600;
+            font-size: 1.25rem;
+            margin: 0 0 1rem;
+            padding: 0 1rem;
+        }
+    }
+
+    .pagination-wrapper {
+        margin-top: auto;
+        display: flex;
+        justify-content: center;
+        padding: 1rem 0;
+    }
+}
+
+.btn-primary {
+    background: #1a73e8;
+    color: white;
+    border: none;
+    padding: 0.625rem 1rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 500;
+
+    &:hover {
+        background: #1558b0;
+    }
+}
+
+.btn-secondary {
+    background-color: transparent;
+    border: #f5f5f5 solid 1px;
+    border-radius: 0.25rem;
+    padding: 0.625rem 1rem;
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+
+    mat-icon {
+        font-size: 1rem;
+        width: 1rem;
+        height: 1rem;
+        color: inherit;
+    }
+
+    &:hover {
+        background-color: #e0e0e0;
+    }
+}
+
+.sort-wrapper {
+  position: relative;
+
+  .sort-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: white;
+    border: 1px solid #eee;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    z-index: 100;
+    min-width: 10rem;
+
+    .sort-option {
+      padding: 0.75rem 1rem;
+      font-size: 0.875rem;
+      cursor: pointer;
+      color: #333;
+
+      &:hover { background: #f5f5f5; }
+    }
+  }
+}

@@ -1,0 +1,124 @@
+.user-table {
+    width: 100%;
+    border-collapse: collapse;
+
+    thead tr {
+        background-color: #f0f4f8;
+
+        th {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            font-size: 0.875rem;
+            color: #888;
+            font-weight: 500;
+        }
+    }
+
+    tbody tr {
+        border-bottom: 1px solid #f0f0f0;
+
+        &:hover {
+            background: #fafafa;
+        }
+
+        td {
+            padding: 1rem 0.75rem;
+            font-size: 0.875rem;
+            vertical-align: middle;
+
+        }
+    }
+
+    thead th:nth-child(1),
+    tbody td:nth-child(1) {
+        width: 45%;
+    }
+
+    thead th:nth-child(2),
+    tbody td:nth-child(2) {
+        width: 20%;
+    }
+
+    thead th:nth-child(3),
+    tbody td:nth-child(3) {
+        width: 25%;
+    }
+
+    thead th:nth-child(4),
+    tbody td:nth-child(4) {
+        width: auto;
+    }
+
+    .name-cell {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+
+        .name-email {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        .name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .email {
+            font-size: 0.75rem;
+            color: #888;
+        }
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 1rem;
+        font-size: 0.75rem;
+        font-weight: 500;
+        margin-top: 0.25rem;
+        white-space: nowrap;
+
+        &-super-admin {
+            background: #1a73e8;
+            color: white;
+        }
+
+        &-admin {
+            background: #1a73e8;
+            color: white;
+        }
+
+        &-hr-admin {
+            background: #5cb8e4;
+            color: white;
+        }
+
+        &-employee {
+            background: #e8e8e8;
+            color: #555;
+        }
+    }
+
+    .action-cell {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 0.5rem;
+        min-width: 80px;
+        height: 100%;
+
+        .action-icon {
+            font-size: 1.1rem;
+            color: #aaa;
+            cursor: pointer;
+
+            &:hover {
+                color: #1a73e8;
+            }
+        }
+    }
+}

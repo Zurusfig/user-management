@@ -1,0 +1,47 @@
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding: 1rem 0;
+
+  .label {
+    font-size: 0.875rem;
+    color: #888;
+  }
+
+  .page-size-select {
+    border: none;
+    border-bottom: 1px solid #1a73e8;
+    font-size: 0.875rem;
+    color: #333;
+    padding: 0.25rem;
+    cursor: pointer;
+    background: transparent;
+
+    &:focus { outline: none; }
+  }
+
+  .page-info {
+    font-size: 0.875rem;
+    color: #888;
+  }
+
+  .nav-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #888;
+    display: flex;
+    align-items: center;
+
+    &:disabled {
+      color: #ccc;
+      cursor: not-allowed;
+    }
+
+    &:hover:not(:disabled) {
+      color: #1a73e8;
+    }
+  }
+}
