@@ -61,13 +61,23 @@ dotnet ef database update
 
 ### 3. Frontend Setup
 
-Create the environment file at `frontend/user-management-app/src/environments/environment.ts`:
+Create both environment files:
 
+**`src/environments/environment.ts`** (production):
 ```ts
 export const environment = {
-  apiBaseUrl: 'http://localhost:5072'
+  apiBaseUrl: 'YOUR_API_URL_HERE'
 };
 ```
+
+**`src/environments/environment.development.ts`** (development):
+```ts
+export const environment = {
+  apiBaseUrl: 'YOUR_API_URL_HERE'
+};
+```
+
+Both files should point to the same API URL during development.
 
 Then install and run:
 ```bash
