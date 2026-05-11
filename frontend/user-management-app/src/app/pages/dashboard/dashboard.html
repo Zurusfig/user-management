@@ -1,1 +1,49 @@
-<p>dashboard works!</p>
+<div class="dashboard">
+    <h2 class="dashboard-title">Users Dashboard</h2>
+
+    <div class="toolbar">
+        <div class="search-wrapper">
+            <app-search-bar (searchChanged)="onSearch($event)"></app-search-bar>
+        </div>
+        <div class="actions">
+            <button class="btn-primary" (click)="toggleAddUserModal()">Add User +</button>
+
+            @if (showAddUserModal()) {
+            <app-add-user-modal (closeModal)="toggleAddUserModal()"></app-add-user-modal>
+            }
+
+            <div class="sort-wrapper">
+                <button class="btn-secondary" (click)="toggleSort()">
+                    Sort by <mat-icon>keyboard_arrow_down</mat-icon>
+                </button>
+
+                @if (showSort()) {
+                <div class="sort-dropdown">
+                    <div class="sort-option" (click)="onSort('firstName', 'asc')">Name (A-Z)</div>
+                    <div class="sort-option" (click)="onSort('firstName', 'desc')">Name (Z-A)</div>
+                    <div class="sort-option" (click)="onSort('createdDate', 'desc')">Date (Newest)</div>
+                    <div class="sort-option" (click)="onSort('createdDate', 'asc')">Date (Oldest)</div>
+                    <div class="sort-option" (click)="onSort('roleid', 'asc')">Role</div>
+                </div>
+                }
+            </div>
+
+            <button class="btn-secondary">Saved search <mat-icon>keyboard_arrow_down</mat-icon> </button>
+            <button class="btn-secondary"><mat-icon>filter_list</mat-icon></button>
+        </div>
+    </div>
+
+    <div class="user-table-container">
+        <div class="table-title">List Users</div>
+        <app-user-table (editUser)="onEdit($event)"></app-user-table>
+    </div>
+
+    @if (showEditModal()) {
+    <app-edit-user-modal [userId]="selectUserId()" (closeModal)="showEditModal.set(false)"></app-edit-user-modal>
+    }
+
+    <div class="pagination-wrapper">
+        <app-pagination [totalCount]="totalCount()" [pageSize]="pageSize()" [pageNumber]="pageNumber()"
+            (pageChange)="onPageChange($event)" (pageSizeChange)="onPageSizeChange($event)"></app-pagination>
+    </div>
+</div>

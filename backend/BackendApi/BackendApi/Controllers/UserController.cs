@@ -78,10 +78,13 @@ namespace BackendApi.Controllers
                 UserName = userWithNames.UserName,
                 Password = userWithNames.Password,
 
-                Permissions = userWithNames.Permissions.Select(p => new PermissionDto
+                Permissions = userWithNames.Permissions.Select(up => new PermissionDto
                 {
-                    PermissionId = p.PermissionId,
-                    PermissionName = p.Permission?.Name ?? "Unknown"
+                    PermissionId = up.PermissionId,
+                    PermissionName = up.Permission?.Name ?? "Unknown",
+                    IsReadable = up.IsReadable,
+                    IsWritable = up.IsWritable,
+                    IsDeletable = up.IsDeletable
                 }).ToList()
             };
 
@@ -120,7 +123,10 @@ namespace BackendApi.Controllers
                 Permissions = user.Permissions.Select(up => new PermissionDto
                 {
                     PermissionId = up.PermissionId,
-                    PermissionName = up.Permission?.Name ?? "Unknown"
+                    PermissionName = up.Permission?.Name ?? "Unknown",
+                    IsReadable = up.IsReadable,
+                    IsWritable = up.IsWritable,
+                    IsDeletable = up.IsDeletable
                 }).ToList()
             };
 
@@ -224,10 +230,13 @@ namespace BackendApi.Controllers
                         RoleId = u.RoleId,
                         RoleName = u.Role?.Name ?? "Unknown" 
                     },
-                    Permissions = u.Permissions.Select(p => new PermissionDto
+                    Permissions = u.Permissions.Select(up => new PermissionDto
                     {
-                        PermissionId = p.PermissionId,
-                        PermissionName = p.Permission?.Name ?? "Unknown"
+                        PermissionId = up.PermissionId,
+                        PermissionName = up.Permission?.Name ?? "Unknown",
+                        IsReadable = up.IsReadable, 
+                        IsWritable = up.IsWritable,
+                        IsDeletable = up.IsDeletable
                     }).ToList()
                 }).ToList()
             };
