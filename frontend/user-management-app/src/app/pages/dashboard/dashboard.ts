@@ -49,6 +49,12 @@ export class Dashboard implements OnInit {
         this.fetchUsers();
         this.userService.deleteSuccess.set(false);
       }
+
+      if (this.userService.updateSuccess()) {
+        this.fetchUsers();
+        this.showEditModal.set(false);
+        this.userService.updateSuccess.set(false);
+      }
     });
   }
 

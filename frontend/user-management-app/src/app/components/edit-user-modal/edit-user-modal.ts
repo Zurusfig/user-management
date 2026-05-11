@@ -5,7 +5,7 @@ import { PermissionService } from '../../services/permission-service';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { passwordMatchValidator } from '../add-user-modal/add-user-modal';
 import { MatIcon } from '@angular/material/icon';
-import { UserPermissionRequest } from '../../models/user.model';
+import { UserPermissionRequest, UserUpdateRequest } from '../../models/user.model';
 
 @Component({
   selector: 'app-edit-user-modal',
@@ -115,7 +115,24 @@ export class EditUserModal {
     this.editUserFormGroup.markAllAsTouched();
 
     if (this.editUserFormGroup.valid) {
-      console.log('Form Value:', this.editUserFormGroup.getRawValue());
+      const formValue = this.editUserFormGroup.getRawValue();
+      console.log(`Form Value: ${JSON.stringify(formValue)}`);
+      const request: UserUpdateRequest = {
+        firstName: formValue.firstName!,
+        lastName: formValue.lastName!,
+        email: formValue.email!,
+        phone: formValue.phone ?? undefined,
+        roleId: formValue.roleId!,
+        userName: formValue.userName!,
+        permissions: (formValue.permissions as any[]).map((p, i) => ({
+          permissionId: this.permissions()[i].permissionId,
+          isReadable: p.isReadable,
+          isWritable: p.isWritable,
+          isDeletable: p.isDeletable
+        }))
+      };
+
+      this.userService.updateUser(this.userId()!, request);
     }
   }
 
