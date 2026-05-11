@@ -35,8 +35,12 @@
 
     <div class="user-table-container">
         <div class="table-title">List Users</div>
-        <app-user-table></app-user-table>
+        <app-user-table (editUser)="onEdit($event)"></app-user-table>
     </div>
+
+    @if (showEditModal()) {
+    <app-edit-user-modal [userId]="selectUserId()" (closeModal)="showEditModal.set(false)"></app-edit-user-modal>
+    }
 
     <div class="pagination-wrapper">
         <app-pagination [totalCount]="totalCount()" [pageSize]="pageSize()" [pageNumber]="pageNumber()"

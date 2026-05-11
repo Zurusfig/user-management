@@ -1,6 +1,6 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable, Signal, signal } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, httpResource } from '@angular/common/http';
 import { DataTableRequest, UserCreateRequest, UserResponse } from '../models/user.model';
 import { UserPagedResponse } from '../models/user.model';
 import { ApiResponse } from '../models/api-response.model';
@@ -68,5 +68,11 @@ export class UserService {
         this.isLoading.set(false);
       }
     });
+  }
+
+  getUserById(userId: Signal<string | null>) {
+    return httpResource<ApiResponse<UserResponse>>(() =>
+      userId() ? `${this.apiBaseUrl}/api/User/${userId()}` : undefined
+    );
   }
 }
