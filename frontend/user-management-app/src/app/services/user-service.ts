@@ -1,7 +1,7 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable, Signal, signal } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { HttpClient } from '@angular/common/http';
-import { DataTableRequest, UserCreateRequest, UserResponse } from '../models/user.model';
+import { HttpClient, httpResource } from '@angular/common/http';
+import { DataTableRequest, UserCreateRequest, UserResponse, UserUpdateRequest } from '../models/user.model';
 import { UserPagedResponse } from '../models/user.model';
 import { ApiResponse } from '../models/api-response.model';
 
@@ -20,6 +20,7 @@ export class UserService {
   isCreateError = signal(false);
   createSuccess = signal(false);
   deleteSuccess = signal(false);
+  updateSuccess = signal(false);
 
   getUsers(request: DataTableRequest) {
     console.log('Fetching users with request:', request);
@@ -62,6 +63,27 @@ export class UserService {
       next: () => {
         this.isLoading.set(false);
         this.deleteSuccess.set(true);
+      },
+      error: () => {
+        this.isError.set(true);
+        this.isLoading.set(false);
+      }
+    });
+  }
+
+  getUserById(userId: Signal<string | null>) {
+    return httpResource<ApiResponse<UserResponse>>(() =>
+      userId() ? `${this.apiBaseUrl}/api/User/${userId()}` : undefined
+    );
+  }
+
+  updateUser(userId: string, request: UserUpdateRequest) {
+    this.isLoading.set(true);
+    this.isError.set(false);
+    this.http.put<ApiResponse<UserResponse>>(`${this.apiBaseUrl}/api/User/${userId}`, request).subscribe({
+      next: () => {
+        this.isLoading.set(false);
+        this.updateSuccess.set(true);
       },
       error: () => {
         this.isError.set(true);

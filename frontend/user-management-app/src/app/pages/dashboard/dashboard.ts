@@ -6,10 +6,11 @@ import { UserService } from '../../services/user-service';
 import { DataTableRequest } from '../../models/user.model';
 import { SearchBar } from '../../components/search-bar/search-bar';
 import { AddUserModal } from '../../components/add-user-modal/add-user-modal';
+import { EditUserModal } from '../../components/edit-user-modal/edit-user-modal';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [UserTable, MatIconModule, Pagination, SearchBar, AddUserModal],
+  imports: [UserTable, MatIconModule, Pagination, SearchBar, AddUserModal, EditUserModal],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
 })
@@ -33,6 +34,9 @@ export class Dashboard implements OnInit {
     search: this.search(),
   }));
 
+  selectUserId = signal<string | null>(null);
+  showEditModal = signal(false);
+
   constructor() {
     effect(() => {
       if (this.userService.createSuccess()) {
@@ -44,6 +48,12 @@ export class Dashboard implements OnInit {
       if (this.userService.deleteSuccess()) {
         this.fetchUsers();
         this.userService.deleteSuccess.set(false);
+      }
+
+      if (this.userService.updateSuccess()) {
+        this.fetchUsers();
+        this.showEditModal.set(false);
+        this.userService.updateSuccess.set(false);
       }
     });
   }
@@ -87,6 +97,11 @@ export class Dashboard implements OnInit {
 
   toggleAddUserModal() {
     this.showAddUserModal.set(!this.showAddUserModal());
+  }
+
+  onEdit(userId: string) {
+    this.selectUserId.set(userId);
+    this.showEditModal.set(true);
   }
 
 }
