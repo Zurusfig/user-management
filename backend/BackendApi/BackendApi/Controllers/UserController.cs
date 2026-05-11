@@ -227,7 +227,10 @@ namespace BackendApi.Controllers
                     Permissions = u.Permissions.Select(p => new PermissionDto
                     {
                         PermissionId = p.PermissionId,
-                        PermissionName = p.Permission?.Name ?? "Unknown"
+                        PermissionName = p.Permission?.Name ?? "Unknown",
+                        IsReadable = p.IsReadable, 
+                        IsWritable = p.IsWritable,
+                        IsDeletable = p.IsDeletable
                     }).ToList()
                 }).ToList()
             };
