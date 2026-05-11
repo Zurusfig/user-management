@@ -135,7 +135,7 @@ export class AddUserModal {
 
 }
 
-function passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
+export function passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
   const password = control.get('password')?.value;
   const confirmPassword = control.get('confirmPassword')?.value;
 

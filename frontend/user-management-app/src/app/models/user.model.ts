@@ -10,7 +10,15 @@ export interface UserResponse {
   roleId: string;
   userName: string;
   password: string;
-  permissions: Permission[];
+  permissions: UserResponsePermission[];
+}
+
+export interface UserResponsePermission {
+  permissionId: string;
+  permissionName: string;
+  isReadable: boolean;
+  isWritable: boolean;
+  isDeletable: boolean;
 }
 
 export interface UserCreateRequest {

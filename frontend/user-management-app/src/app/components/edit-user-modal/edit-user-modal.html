@@ -1,7 +1,135 @@
-<form>
+<form [formGroup]="editUserFormGroup" (ngSubmit)="onSubmit()">
   <div class="modal-overlay">
     <div class="modal">
-        Edit User Modal - {{ userId }}
+
+      <div class="modal-header">
+        <h2>Edit User</h2>
+        <mat-icon class="close-btn" (click)="closeModal.emit()">close</mat-icon>
+      </div>
+
+      <div class="modal-body">
+
+        <div class="form-row">
+          <div class="form-field full">
+            <label>User ID</label>
+            <input type="text" formControlName="id" readonly />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-field">
+            <label>First Name *</label>
+            <input type="text" formControlName="firstName" />
+            <div class="error-message">
+              @if (editUserFormGroup.get('firstName')?.invalid && editUserFormGroup.get('firstName')?.touched) {
+              First name is required
+              }
+            </div>
+          </div>
+          <div class="form-field">
+            <label>Last Name *</label>
+            <input type="text" formControlName="lastName" />
+            <div class="error-message">
+              @if (editUserFormGroup.get('lastName')?.invalid && editUserFormGroup.get('lastName')?.touched) {
+              Last name is required
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-field">
+            <label>Email *</label>
+            <input type="email" formControlName="email" />
+            <div class="error-message">
+              @if (editUserFormGroup.get('email')?.invalid && editUserFormGroup.get('email')?.touched) {
+              @if (editUserFormGroup.get('email')?.hasError('required')) {
+              Email is required
+              } @else if (editUserFormGroup.get('email')?.hasError('email')) {
+              Invalid email format
+              }
+              }
+            </div>
+          </div>
+          <div class="form-field">
+            <label>Mobile No</label>
+            <input type="text" formControlName="phone" (keypress)="onlyNumbers($event)" />
+            <div class="error-message">
+              @if (editUserFormGroup.get('phone')?.hasError('pattern') && editUserFormGroup.get('phone')?.touched) {
+              Phone must be 10 digits
+              }
+            </div>
+          </div>
+          <div class="form-field">
+            <label>Role *</label>
+            <select formControlName="roleId">
+              <option value="" disabled selected>Select Role Type</option>
+              @if (roleIsLoading()) {
+              <option disabled>Loading roles...</option>
+              } @else if (roleIsError()) {
+              <option disabled>Error loading roles</option>
+              } @else {
+              @for (role of roles(); track role.roleId) {
+              <option [value]="role.roleId">{{ role.roleName }}</option>
+              }
+              }
+            </select>
+            <div class="error-message">
+              @if (editUserFormGroup.get('roleId')?.invalid && editUserFormGroup.get('roleId')?.touched) {
+              Please select a role
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-field">
+            <label>Username *</label>
+            <input type="text" formControlName="userName" />
+            <div class="error-message">
+              @if (editUserFormGroup.get('userName')?.invalid && editUserFormGroup.get('userName')?.touched) {
+              Username is required
+              }
+            </div>
+          </div>
+        </div>
+
+        <table class="permission-table" formArrayName="permissions">
+          <thead>
+            <tr>
+              <th>Module Permission</th>
+              <th>Read</th>
+              <th>Write</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            @if (permissionIsLoading()) {
+            <tr>
+              <td colspan="4">Loading permissions...</td>
+            </tr>
+            } @else if (permissionIsError()) {
+            <tr>
+              <td colspan="4">Error loading permissions</td>
+            </tr>
+            } @else {
+            @for (permission of permissions(); track permission.permissionId; let i = $index) {
+            <tr [formGroupName]="i">
+              <td>{{ permission.permissionName }}</td>
+              <td><input type="checkbox" formControlName="isReadable" /></td>
+              <td><input type="checkbox" formControlName="isWritable" /></td>
+              <td><input type="checkbox" formControlName="isDeletable" /></td>
+            </tr>
+            }
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <div class="modal-footer">
+        <button type="submit" class="btn-primary">Save Changes</button>
+        <button type="button" class="btn-cancel" (click)="closeModal.emit()">Cancel</button>
+      </div>
     </div>
   </div>
 </form>

@@ -41,7 +41,8 @@
 
     .modal-body {
         display: flex;
-        flex-direction: column;
+        flex-direction: column; 
+        padding: 0;
 
         .form-row {
             display: flex;
@@ -54,11 +55,19 @@
                     flex: 3;
                 }
 
-                input {
+                label {
+                    display: block;
+                    font-size: 0.75rem;
+                    color: #888;
+                    margin-bottom: 0.25rem;
+                }
+
+                input,
+                select {
                     width: 100%;
                     border: none;
                     border-bottom: 1px solid #ddd;
-                    padding: 0.5rem 0;
+                    padding: 0.4rem 0;
                     font-size: 0.875rem;
                     outline: none;
                     background: transparent;
@@ -67,102 +76,86 @@
                         border-bottom-color: #1a73e8;
                     }
 
-                    &::placeholder {
+                    &[readonly] {
                         color: #aaa;
-                    }
-                }
-
-                select {
-                    width: 100%;
-                    border: none;
-                    border-bottom: 1px solid #ddd;
-                    padding: 0.5rem 0;
-                    font-size: 0.875rem;
-                    outline: none;
-                    background: white;
-                    color: #aaa;
-                    cursor: pointer;
-
-                    &:focus {
-                        border-bottom-color: #1a73e8;
-                        color: #333;
+                        cursor: not-allowed;
                     }
                 }
 
                 .error-message {
-                    color: red;
-                    font-size: 0.75rem;
-                    margin-top: 0.25rem;
-                    min-height: 1rem;
+                    color: #e53935;
+                    font-size: 0.7rem;
+                    min-height: 0.875rem;
+                    margin-top: 0.15rem;
                 }
             }
         }
     }
+}
 
-    .permission-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 1rem;
+.permission-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
 
-        thead tr {
-            background: #f0f4f8;
+    thead tr {
+        background: #f0f4f8;
 
-            th {
-                padding: 0.75rem 1rem;
-                text-align: left;
-                font-size: 0.875rem;
-                color: #888;
-                font-weight: 500;
-            }
-        }
-
-        tbody tr {
-            border-bottom: 1px solid #f0f0f0;
-
-            td {
-                padding: 0.75rem 1rem;
-                font-size: 0.875rem;
-            }
-
-            input[type="checkbox"] {
-                width: 1rem;
-                height: 1rem;
-                cursor: pointer;
-                accent-color: #1a73e8;
-            }
+        th {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            font-size: 0.875rem;
+            color: #888;
+            font-weight: 500;
         }
     }
 
-    .modal-footer {
-        display: flex;
-        justify-content: flex-end;
-        gap: 1rem;
-        margin-top: 1.5rem;
+    tbody tr {
+        border-bottom: 1px solid #f0f0f0;
 
-        .btn-primary {
-            background: #1a73e8;
-            color: white;
-            border: none;
-            padding: 0.625rem 1.25rem;
-            border-radius: 0.25rem;
-            cursor: pointer;
+        td {
+            padding: 0.75rem 1rem;
             font-size: 0.875rem;
-
-            &:hover {
-                background: #1558b0;
-            }
         }
 
-        .btn-cancel {
-            background: none;
-            border: none;
+        input[type="checkbox"] {
+            width: 1rem;
+            height: 1rem;
             cursor: pointer;
-            font-size: 0.875rem;
-            color: #888;
+            accent-color: #1a73e8;
+        }
+    }
+}
 
-            &:hover {
-                color: #333;
-            }
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1.5rem;
+
+    .btn-primary {
+        background: #1a73e8;
+        color: white;
+        border: none;
+        padding: 0.625rem 1.25rem;
+        border-radius: 0.25rem;
+        cursor: pointer;
+        font-size: 0.875rem;
+
+        &:hover {
+            background: #1558b0;
+        }
+    }
+
+    .btn-cancel {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 0.875rem;
+        color: #888;
+
+        &:hover {
+            color: #333;
         }
     }
 }
