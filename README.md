@@ -7,7 +7,7 @@ A fullstack user management application built as a pre-internship assignment for
 ## Tech Stack
 
 **Backend**
-- ASP.NET Core 10.0
+- ASP.NET Core 9.0
 - Entity Framework Core
 - SQL Server
 
@@ -20,8 +20,8 @@ A fullstack user management application built as a pre-internship assignment for
 
 ## Prerequisites
 
-- [.NET 10.0 SDK](https://dotnet.microsoft.com/download)
-- [SQL Server](https://www.microsoft.com/en-us/sql-server/sql-server-downloads) + [SSMS](https://learn.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms)
+- [.NET 9.0 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/9.0)
+- [SQL Server](https://learn.microsoft.com/en-us/sql/database-engine/install-windows/install-sql-server?view=sql-server-ver16&culture=en-us&country=us) + [SSMS](https://www.microsoft.com/en-ie/download/details.aspx?id=8961)
 - [Node.js v24.14.0](https://nodejs.org/)
 - npm 11.9.0
 - Angular CLI: `npm install -g @angular/cli`
